@@ -8,6 +8,7 @@ import com.max.project.entity.User;
 import com.max.project.exception.ValidatorException;
 import com.max.project.service.EntityDaoService;
 import com.max.project.service.NoteBusinessService;
+import com.max.project.util.HibernateUtil;
 import com.max.project.validator.NoteValidator;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class NoteService implements EntityDaoService<Note>, NoteBusinessService 
 
     @Override
     public Note create(RequestContext requestContext) {
+        System.out.println(requestContext.getParamMap().get("decryption"));
         return Note.builder()
                 .id(Long.parseLong(requestContext.getParamMap().get("id")))
                 .name(requestContext.getParamMap().get("name"))
@@ -81,9 +83,15 @@ public class NoteService implements EntityDaoService<Note>, NoteBusinessService 
      */
     @Override
     public List<Note> selectAllByUserId(Long id) {
-//        return null;
-        return selectAll().stream().filter(note -> note.getUser().getId().equals(id))
-//                .peek(note -> note.setDecryption(note.getDecryption().replaceAll("\n","<br>")))
-                .collect(Collectors.toList());
+        return selectAll().stream().filter(note -> note.getUser().getId().equals(id)).collect(Collectors.toList());
     }
+
+    @Override
+    public void removeAll(Long id) {
+        List<Note> list = selectAllByUserId(id);
+        for (Note note : list) {
+            remove(note.getId());
+        }
+    }
+
 }

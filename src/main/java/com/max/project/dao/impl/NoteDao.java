@@ -57,12 +57,15 @@ public class NoteDao implements AbstractDao<Note> {
     @Override
     @SuppressWarnings("unchecked")
     public List<Note> selectAll() {
-        return HibernateUtil.getSessionFactory().openSession().createQuery("from Note").list();
+        transaction = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+        List<Note> list = HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Note").list();
+        transaction.commit();
+        return list;
     }
 
     @Override
     public Note selectById(Long id) {
-        return HibernateUtil.getSessionFactory().openSession().get(Note.class, id);
+        return HibernateUtil.getSessionFactory().getCurrentSession().get(Note.class, id);
     }
 
     @Override

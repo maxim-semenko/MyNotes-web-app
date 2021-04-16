@@ -54,8 +54,8 @@ public class Note extends BaseEntity {
     private NoteStatusEnum noteStatus;
 
     //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //    @JoinColumn(name = "fk_user_id")
     @ManyToOne
-//    @JoinColumn(name = "fk_user_id")
     private User user;
 
 }

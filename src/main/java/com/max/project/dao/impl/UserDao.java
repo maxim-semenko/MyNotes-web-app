@@ -3,6 +3,7 @@ package com.max.project.dao.impl;
 import com.max.project.dao.AbstractDao;
 import com.max.project.entity.User;
 import com.max.project.util.HibernateUtil;
+import com.mysql.cj.xdevapi.SessionFactory;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -69,9 +70,12 @@ public class UserDao implements AbstractDao<User> {
      */
     @Override
     public Boolean update(User user) {
-        openCurrentSessionWithTransaction();
-        currentSession.update(user);
-        closeCurrentSessionWithTransaction();
+        transaction = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+        HibernateUtil.getSessionFactory().getCurrentSession().update(user);
+//        HibernateUtil.getSessionFactory().getCurrentSession().merge(user);
+//        currentSession = HibernateUtil.getSessionFactory().openSession();
+//        closeCurrentSessionWithTransaction();
+        transaction.commit();
         return true;
     }
 
@@ -99,7 +103,8 @@ public class UserDao implements AbstractDao<User> {
 
     @Override
     public List<User> selectByCriteria(User user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        transaction = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
         Root<User> root = criteriaQuery.from(User.class);
@@ -113,7 +118,9 @@ public class UserDao implements AbstractDao<User> {
         Optional.ofNullable(user.getLastname()).ifPresent(predicate -> predicateList.add(builder.equal(root.get("lastname"), user.getLastname())));
         Optional.ofNullable(user.getEmail()).ifPresent(predicate -> predicateList.add(builder.equal(root.get("email"), user.getEmail())));
         criteriaQuery.select(root).where(predicateList.toArray(new Predicate[0]));
-        return session.createQuery(criteriaQuery).getResultList();
+        List<User> list = session.createQuery(criteriaQuery).getResultList();
+        transaction.commit();
+        return list;
     }
 
     /**

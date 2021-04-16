@@ -9,6 +9,7 @@ public class PathToPages {
     public static final String USER_CABINET_PAGE = "/WEB-INF/jsp/user/cabinet-user.jsp";
     public static final String USER_EDIT_PAGE = "/WEB-INF/jsp/user/cabinet-user-edit.jsp";
     public static final String ADMIN_CABINET_PAGE = "/WEB-INF/jsp/admin/cabinet-admin.jsp";
+    public static final String ALL_USERS_PAGE = "/WEB-INF/jsp/admin/all-users.jsp";
 
 
     // Redirect

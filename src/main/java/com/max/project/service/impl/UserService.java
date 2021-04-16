@@ -4,6 +4,7 @@ import com.max.project.dao.impl.UserDao;
 import com.max.project.entity.User;
 import com.max.project.exception.ValidatorException;
 import com.max.project.service.EntityDaoService;
+import com.max.project.util.HibernateUtil;
 import com.max.project.util.PasswordSecurityUtil;
 import com.max.project.service.UserBusinessService;
 import com.max.project.validator.UserValidator;
@@ -66,12 +67,16 @@ public class UserService implements EntityDaoService<User>, UserBusinessService 
 
     @Override
     public List<User> selectAll() {
-        return userDao.selectAll();
+        List<User> list = userDao.selectAll();
+        HibernateUtil.getSessionFactory().openSession().close();
+        return list;
     }
 
     @Override
     public User selectById(Long id) {
-        return userDao.selectById(id);
+        User user= userDao.selectById(id);
+        HibernateUtil.getSessionFactory().openSession().close();
+        return user;
     }
 
     /**
@@ -93,8 +98,6 @@ public class UserService implements EntityDaoService<User>, UserBusinessService 
      */
     @Override
     public Boolean isExistEmail(String email) {
-        System.out.println("service email " + email);
-
         return selectAll().stream().anyMatch(user -> user.getEmail().equals(email));
     }
 

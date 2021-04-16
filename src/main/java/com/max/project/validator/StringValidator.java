@@ -15,7 +15,7 @@ public class StringValidator implements Validator<String> {
 
     private static StringValidator instance;
     private final int maxLength = 25;
-    private final int minLength = 2;
+    private final int minLength = 1;
 
     public static StringValidator getInstance() {
         if (instance == null) {

@@ -16,29 +16,18 @@ import java.util.Calendar;
 public class AddNoteCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
-        System.out.println("AAAAAAAAAAAAAA");
-        String name = requestContext.getParamMap().get("name");
-        String decryption = requestContext.getParamMap().get("decryption");
-        User user = (User) requestContext.getHttpSession().getAttribute("user");
-
-//        System.out.println(user);
-//        System.out.println(user.getId());
-
         Note note = Note.builder()
-                .name(name)
-                .decryption(decryption)
-                .user(user)
+                .name(requestContext.getParamMap().get("name"))
+                .decryption(requestContext.getParamMap().get("decryption"))
+                .user((User) requestContext.getHttpSession().getAttribute("user"))
                 .noteStatus(NoteStatusEnum.WAITING)
                 .createdTime(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime()))
                 .build();
-
         try {
             NoteService.getInstance().insert(note);
         } catch (ValidatorException e) {
             e.printStackTrace();
         }
-
         return new ResponseContextImpl(PathToPages.USER_CABINET_PAGE_REDIRECT, ResponseContext.ResponseType.REDIRECT);
     }
 }

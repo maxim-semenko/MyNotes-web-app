@@ -10,10 +10,11 @@
         <property name="show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.current_session_context_class">thread</property>
-
+<!--        <property name="hibernate.current_session_context_class">th</property>-->
 
         <mapping class="com.max.project.entity.User"/>
         <mapping class="com.max.project.entity.Note"/>
+        <mapping class="java.util.List"/>
 
     </session-factory>
 </hibernate-configuration>

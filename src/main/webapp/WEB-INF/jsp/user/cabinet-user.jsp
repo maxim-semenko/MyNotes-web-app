@@ -61,6 +61,10 @@
                 <input type="submit" class="btn btn-outline-dark btn-sm btn-block" value="Sign out">
                 <input hidden name="command" value="signOutUser">
             </form>
+            <form action="<c:url value="/controller"/>" method="post">
+                <input type="submit" class="btn btn-outline-dark btn-sm btn-block" value="Delete account">
+                <input hidden name="command" value="deleteUser">
+            </form>
             <br>
             <h5 class="mb-0">About</h5>
             <div class="p-4 rounded shadow-sm bg-light">
@@ -73,13 +77,14 @@
             <br>
             <form action="<c:url value="/controller"/>" method="get">
                 <input hidden name="command" value="addNote">
-                <input type="text" name="name">
-                <input type="submit" value="Add">
+                <input type="text" name="name" placeholder="name">
                 <br>
                 <br>
                 <div class="form-group purple-border">
-                    <textarea class="form-control" name="decryption" rows="3" maxlength="255"></textarea>
+                    <textarea class="form-control" name="decryption" rows="3" maxlength="255"
+                              placeholder="decryption"></textarea>
                 </div>
+                <input class="btn btn-outline-dark btn-sm btn-block" type="submit" value="Add">
             </form>
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <c:set var="index" scope="page" value="${0}"/>
@@ -115,7 +120,7 @@
                         </button>
                     </form>
                     <br>
-                    Data: <c:out value="${note.createdTime}"/>
+                    Data created: <c:out value="${note.createdTime}"/>
 
                     <hr>
                 </c:forEach>

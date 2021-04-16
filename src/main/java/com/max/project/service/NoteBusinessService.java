@@ -13,4 +13,6 @@ public interface NoteBusinessService {
 
     List<Note> selectAllByUserId(Long id);
 
+    void removeAll(Long id);
+
 }
